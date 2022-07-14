@@ -12,18 +12,17 @@ if ($_SERVER['SERVER_NAME'] == constant("SERVER_NAME")) {
             $country = $_POST["country"];
             $state = $_POST["state"];
             $error = array();
-            
+
             // validate data         
-            if (empty($name)) $error['name']="Name shoud not be blank!";
-            else if (!preg_match("/^[a-zA-Z ]*$/", $name)) $error['name']= "Invalid name format";
-          
-            if (empty($email)) $error['email']= "Email is required";
-            else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $error['email']= "Invalid email format";
-            if (empty($state)) $error['state']= "state is required";
-            if (empty($country)) $error['country']= "country is required";
-            if($password !== $c_password){
-                $error['password']="Password should be same.";
-            } 
+            if (empty($name)) $error['name'] = "Name shoud not be blank!";
+            else if (!preg_match("/^[a-zA-Z ]*$/", $name)) $error['name'] = "Invalid name format";
+            if (empty($email)) $error['email'] = "Email is required";
+            else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $error['email'] = "Invalid email format";
+            if (empty($state)) $error['state'] = "state is required";
+            if (empty($country)) $error['country'] = "country is required";
+            if ($password !== $c_password) {
+                $error['password'] = "Password should be same.";
+            }
             if (sizeof($error) > 0) {
                 echo json_encode(array("success" => false, "data" => $error));
                 die;
@@ -33,9 +32,21 @@ if ($_SERVER['SERVER_NAME'] == constant("SERVER_NAME")) {
 
             $sql = "INSERT INTO user(name, email, password, country, state) VALUES ('$name','$email','$password','$country','$state')";
             if ($conn->query($sql) == TRUE) {
-                echo json_encode(array("success" => true, "message" => "Message has been Received"));
+                echo json_encode(array("success" => true, "message" => "Register Successfully "));
             } else {
-                echo json_encode(array("success" => false, "message" => "Message has not Received"));
+                echo json_encode(array("success" => false, "message" => "Fill the form correctly"));
+            }
+        } elseif ($_POST['country']) {
+            $sql = "SELECT * FROM state  WHERE c_id =" . $_POST['country'];
+            $result = mysqli_query($conn, $sql);
+            if ($result->num_rows > 0) {
+                echo '<option value="">Select State </option>';
+
+                while ($row = $result->fetch_assoc()) {
+                    echo '<option value=' . $row['id'] . '>' . $row['state_name'] . '</option>';
+                }
+            } else {
+                echo '<option value=>No data Found</option>';
             }
         } else {
             echo json_encode(array("success" => false, "message" => "Method 1 not found"));
@@ -44,5 +55,3 @@ if ($_SERVER['SERVER_NAME'] == constant("SERVER_NAME")) {
         echo json_encode(array("success" => false, "message" => "Method 2 not found"));
     }
 }
-
-

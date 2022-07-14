@@ -70,17 +70,18 @@ $("#register_form").on("submit", function (e) {
 });
 
 
-// function getcountry(DATA){
-// // alert(DATA);
-//     $('#state').html('')
-//     $.ajax({
-//         type: "POST",
-//         url: "PHP/register.php",
-//         data: { DATA: "country"},
-//         cache: false,
-//         success: function (response) {
-       
-//         },
-//       });
+function getcountry(id) {
+    $('#state').html('')
+    $.ajax({
+        type: "POST",
+        url: "PHP/register.php",
+        data: {
+            country: id
+        },
+        cache: false,
+        success: function(data) {
+            $('#state').html(data);
+        }
+    });
 
-// }
+}

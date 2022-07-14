@@ -84,23 +84,6 @@ $result = mysqli_query($conn, $sql);
 <!-- script start  -->
 
 <!-- page script  -->
-<script>
-    function getcountry(id) {
-        $('#state').html('')
-        $.ajax({
-            type: "POST",
-            url: "PHP/getstate.php",
-            data: {
-                country: id
-            },
-            cache: false,
-            success: function(data) {
-                $('#state').html(data);
-            }
-        });
-
-    }
-</script>
 <script src="js/common.js"></script>
 <script src="js/register.js"></script>
 <script src="asset/sweetalert2-11.4.0/package/dist/sweetalert2.js"></script>
